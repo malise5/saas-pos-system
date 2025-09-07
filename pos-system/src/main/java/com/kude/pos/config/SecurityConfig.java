@@ -12,6 +12,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.security.Security;
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 public class SecurityConfig {
@@ -36,7 +38,20 @@ public class SecurityConfig {
         return new CorsConfigurationSource() {
             @Override
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                return null;
+                CorsConfiguration cfg = new CorsConfiguration();
+                cfg.setAllowedOrigins(
+                        Arrays.asList(
+                                "http://localhost:3000",
+                                "http://localhost:5173",
+                                "https://pos-frontend-seven.vercel.app"
+                        )
+                );
+                cfg.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                cfg.setAllowCredentials(true);
+                cfg.setAllowedHeaders(Collections.singletonList("*"));
+                cfg.setExposedHeaders(Arrays.asList("Authorization"));
+                cfg.setMaxAge(3600L);
+                return cfg;
             }
         };
     }
